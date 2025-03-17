@@ -6,9 +6,8 @@ const auth = (req, res, next) => {
 
     if (!bearer) {
       const error = new Error("no token found");
-      error.status = 400;
+      error.status = 401;
       throw error;
-      return;
     }
     const token = bearer.split(" ")[1];
 

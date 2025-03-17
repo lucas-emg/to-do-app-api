@@ -23,5 +23,5 @@ app.use("/todolists", require("./routes/todolist.routes"));
 // Exposing app
 app.listen(
   process.env.PORT,
-  console.log(`App is loading on port: ${process.env.PORT}`)
+  console.log(`App is loading on port: ${process.env.PORT}`),
 );
