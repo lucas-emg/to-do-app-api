@@ -1,12 +1,9 @@
-const Todo = require("../models/Todo")
+const Todo = require("../models/Todo");
 
 const deleteAllTodos = (todos) => {
+  todos.forEach(async (todo) => {
+    await Todo.findByIdAndDelete(todo);
+  });
+};
 
-    todos.forEach( async (todo) => {
-
-        await Todo.findByIdAndDelete(todo)
-
-    })
-}
-
-module.exports = deleteAllTodos
+module.exports = deleteAllTodos;

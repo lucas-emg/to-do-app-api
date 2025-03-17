@@ -1,30 +1,25 @@
-const jwt = require('jsonwebtoken')
+const jwt = require("jsonwebtoken");
 
-const auth =  (req, res, next) => {
+const auth = (req, res, next) => {
+  try {
+    const bearer = req.get("Authorization");
 
-     try {
+    if (!bearer) {
+      const error = new Error("no token found");
+      error.status = 400;
+      throw error;
+      return;
+    }
+    const token = bearer.split(" ")[1];
 
-         const bearer = req.get('Authorization')
+    const decodedToken = jwt.verify(token, process.env.JWT_SECRET);
 
-         if(!bearer) {
-             const error = new Error('no token found')
-             error.status = 400
-             throw error
-             return
-         }
-         const token = bearer.split(' ')[1]
+    req.user = { ...decodedToken };
 
-         const decodedToken = jwt.verify(token, process.env.JWT_SECRET)
+    next();
+  } catch (error) {
+    res.status(error.status || 401).json(error.message);
+  }
+};
 
-         req.user = {...decodedToken}
-
-         next()
-
-        } catch (error) {
-
-            res.status(error.status || 401).json(error.message)
-
-        }
-}
-
-module.exports = auth
+module.exports = auth;

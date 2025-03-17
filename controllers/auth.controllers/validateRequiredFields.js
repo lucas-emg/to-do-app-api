@@ -4,7 +4,7 @@ const validateRequiredFields = (
   email,
   password,
   status,
-  message
+  message,
 ) => {
   if (!name || !username || !email || !password) {
     const error = new Error();

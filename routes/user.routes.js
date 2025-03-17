@@ -1,69 +1,62 @@
-const { Router } = require('express')
-const mongoose = require('mongoose')
-const uploadProfilePricture = require('../config/cloudinary.profile.config')
-const filterSearchedUser = require('../controllers/user.controllers/filterSearchedUser')
-const User = require('../models/User')
+const { Router } = require("express");
+const mongoose = require("mongoose");
+const uploadProfilePricture = require("../config/cloudinary.profile.config");
+const filterSearchedUser = require("../controllers/user.controllers/filterSearchedUser");
+const User = require("../models/User");
 
-const router = Router()
+const router = Router();
 
 //Enable Users to update their profile
-router.put('/updateUser', async (req, res) => {
+router.put("/updateUser", async (req, res) => {
+  const userId = req.user.id;
+  const payload = req.body;
 
-    const userId = req.user.id
-    const payload = req.body
+  try {
+    const updatedUser = await User.findByIdAndUpdate(userId, payload, {
+      new: true,
+    });
 
-    try {
-
-        const updatedUser = await User.findByIdAndUpdate(userId, payload, {new: true})
-
-        res.status(200).json(updatedUser)
-        
-    } catch (error) {
-
-        res.status(500).json(error.message)
-        
-    }
-})
+    res.status(200).json(updatedUser);
+  } catch (error) {
+    res.status(500).json(error.message);
+  }
+});
 
 //Enable Users to Upload a Profile Picture
-router.put('/uploadProfilePhoto', uploadProfilePricture.single('profilePic'), async (req, res) => {
-
-    const { path } = req.file
-    const userId = req.user.id
+router.put(
+  "/uploadProfilePhoto",
+  uploadProfilePricture.single("profilePic"),
+  async (req, res) => {
+    const { path } = req.file;
+    const userId = req.user.id;
 
     try {
+      const updatedUser = await User.findByIdAndUpdate(
+        userId,
+        { profileImage: path },
+        { new: true },
+      );
 
-        const updatedUser = await User.findByIdAndUpdate(userId, { profileImage: path }, { new: true })
-
-        res.status(200).json(updatedUser)
-
+      res.status(200).json(updatedUser);
     } catch (error) {
-
-        res.status(500).json(error.message)
-        
+      res.status(500).json(error.message);
     }
-
-})
+  },
+);
 
 //Serach User by Username or Email
-router.get('/searchOneUser/:search', async (req, res) => {
+router.get("/searchOneUser/:search", async (req, res) => {
+  const searchParam = req.params.search;
 
-    const searchParam = req.params.search
-    
-    try {
+  try {
+    const allUsers = await User.find().select("-passwordHash");
 
-        const allUsers = await User.find().select('-passwordHash')
+    const search = filterSearchedUser(allUsers, searchParam);
 
-        const search = filterSearchedUser(allUsers, searchParam)
+    res.status(200).json(search);
+  } catch (error) {
+    res.status(500).json(error.message);
+  }
+});
 
-        res.status(200).json(search)
-        
-    } catch (error) {
-
-        res.status(500).json(error.message)
-        
-    }
-
-})
-
-module.exports = router
+module.exports = router;

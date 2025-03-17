@@ -1,18 +1,16 @@
 const validateUserIsAdmin = (adminsList, userId, status, message) => {
+  if (adminsList.includes(userId)) {
+    return;
+  }
+  const error = new Error();
 
-    if (adminsList.includes(userId)) {
-        return
-    }
-        const error = new Error
+  error.status = status.toString();
 
-        error.status = status.toString()
+  error.message = message;
 
-        error.message = message
+  console.log(error);
 
-        console.log(error)
+  throw error;
+};
 
-        throw error
-
-}
-
-module.exports = validateUserIsAdmin
+module.exports = validateUserIsAdmin;

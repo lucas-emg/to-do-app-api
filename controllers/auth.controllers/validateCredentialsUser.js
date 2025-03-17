@@ -1,17 +1,15 @@
 const validateCredentialsUser = (user, status, message) => {
+  if (!user) {
+    const error = new Error();
 
-    if (!user) {
+    error.status = status;
 
-        const error = new Error
+    error.message = message;
 
-        error.status = status
+    throw error;
+  }
 
-        error.message = message
+  return;
+};
 
-        throw error
-    }
-
-    return
-}
-
-module.exports = validateCredentialsUser
+module.exports = validateCredentialsUser;
