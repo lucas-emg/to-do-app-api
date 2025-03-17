@@ -7,11 +7,11 @@
    -nvm
 
 2. Git clone this repository to your local machine
-3. Use nvm to ensure Node.js version is correct:
-   `nvm install 22.14.0`
-   `nvm use 22.14.0`
-   Confirm the installation with:
-   `node -v`
+3. Use nvm to ensure Node.js version is correct:\
+   `nvm install 22.14.0`\
+   `nvm use 22.14.0`\
+   Confirm the installation with:\
+   `node -v`\
 
 4. Install all dependencies:
    `npm install`
