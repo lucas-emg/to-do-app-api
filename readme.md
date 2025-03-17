@@ -11,7 +11,7 @@
    `nvm install 22.14.0`\
    `nvm use 22.14.0`\
    Confirm the installation with:\
-   `node -v`\
+   `node -v`
 
 4. Install all dependencies:
    `npm install`
